@@ -187,3 +187,24 @@ elif modulo == "Tensores y Vigas (DIMTENS)":
     
     st.markdown("---")
     st.markdown("**Resultados del Análisis de Equilibrio**")
+    
+st.warning(f"Fuerza de tracción/compensación requerida en la viga-tensor: {F_viga:.2f} kN")
+st.markdown("Dimensionamiento de la Viga de Vínculo/Tensor")
+col3, col4 = st.columns(2)
+with col3:
+b_viga = st.number_input("Ancho de la viga b (m)", min_value=0.15, value=0.25, step=0.05)
+with col4:
+h_viga = st.number_input("Canto total de la viga h (m)", min_value=0.20, value=0.45, step=0.05)
+As_tensor = (F_viga * 1.4 * 1000) / (0.9 * f_yk)
+st.success(f"Área de acero longitudinal requerida por tracción: {As_tensor/100:.2f} cm²")
+barra_t = st.selectbox("Seleccione diámetro de armadura principal (mm)", [10, 12, 16, 20, 25], index=1)
+area_b_t = np.pi * (barra_t/2)**2
+cant_t = int(np.ceil(As_tensor / area_b_t))
+st.write(f"Recomendación: Colocar un mínimo de {max(cant_t, 2)} ø {barra_t} en la cara traccionada.")
+st.markdown("---")
+st.caption("Sistema BASE v2026. Desarrollado con tecnología Streamlit para aplicaciones de ingeniería estructural.")
+<FollowUp>
+Por favor, confirmame si al guardar este archivo corregido en GitHub e impactar los cambios en Streamlit Cloud la interfaz ya se estabilizó:
+* ¿Se cargó el **diseño de menús y casilleros interactivos**?
+* ¿Surgió algún **otro cartel de error** en la consola del servidor de Streamlit?
+</FollowUp>
