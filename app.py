@@ -16,9 +16,9 @@ st.markdown("""
     .success-text { color: #16A34A; font-weight: bold; }
     .danger-text { color: #DC2626; font-weight: bold; }
     </style>
-""", unsafe_allowed_html=True)
+""", unsafe_allow_html=True)
 
-st.markdown('<div class="main-title">🏗️ Sistema BASE: Dimensionamiento de Fundaciones Superficiales</div>', unsafe_allowed_html=True)
+st.markdown('<div class="main-title">🏗️ Sistema BASE: Dimensionamiento de Fundaciones Superficiales</div>', unsafe_allow_html=True)
 st.write("Versión Web Modernizada. Cálculo de fundaciones, tensores y armaduras según criterios geotécnicos y estructurales.")
 
 # Sidebar - Selección de Módulo Principal
@@ -31,7 +31,7 @@ modulo = st.sidebar.radio(
 # Parámetros Globales de Materiales (Comunes a los módulos)
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Propiedades de Materiales**")
-f_ck = st.sidebar.selectbox("Hormigón f'c (MPa)", [20, 25, 30, 35], index=1)
+f_ck = st.sidebar.selectbox("Hormigón f'c (MPa)", [15, 20, 25, 30, 35], index=2)
 f_yk = st.sidebar.selectbox("Acero f'y (MPa)", [420, 500], index=0)
 recubrimiento = st.sidebar.slider("Recubrimiento neto (r) [cm]", 3.0, 7.5, 5.0, 0.5)
 
@@ -39,7 +39,7 @@ recubrimiento = st.sidebar.slider("Recubrimiento neto (r) [cm]", 3.0, 7.5, 5.0, 
 # MÓDULO 1: BASES AISLADAS (DIMBASE) + ARMADURAS Y PUNZONADO (BAC-BE)
 # ==============================================================================
 if modulo == "Bases Aisladas (DIMBASE)":
-    st.markdown('<div class="section-title">Módulo: Zapatas Aisladas con Flexión Compuesta</div>', unsafe_allowed_html=True)
+    st.markdown('<div class="section-title">Módulo: Zapatas Aisladas con Flexión Compuesta</div>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     with col1:
@@ -85,11 +85,11 @@ if modulo == "Bases Aisladas (DIMBASE)":
         st.metric("Tensión Mínima Actuante", f"{sigma_min:.2f} kPa", help="Un valor negativo indica despegue de la zapata.")
 
     if sigma_max <= sigma_adm and sigma_min >= 0:
-        st.markdown('<span class="success-text">✅ VERIFICA: Las tensiones se encuentran dentro del rango admisible y no hay despegue.</span>', unsafe_allowed_html=True)
+        st.markdown('<span class="success-text">✅ VERIFICA: Las tensiones se encuentran dentro del rango admisible y no hay despegue.</span>', unsafe_allow_html=True)
     elif sigma_max <= sigma_adm and sigma_min < 0:
-        st.markdown('<span class="danger-text">⚠️ ALERTA: Existe despegue en las esquinas de la fundación (Sigma Mín < 0). Aumente las dimensiones.</span>', unsafe_allowed_html=True)
+        st.markdown('<span class="danger-text">⚠️ ALERTA: Existe despegue en las esquinas de la fundación (Sigma Mín < 0). Aumente las dimensiones.</span>', unsafe_allow_html=True)
     else:
-        st.markdown('<span class="danger-text">❌ NO VERIFICA: La tensión máxima supera la capacidad portante del terreno.</span>', unsafe_allowed_html=True)
+        st.markdown('<span class="danger-text">❌ NO VERIFICA: La tensión máxima supera la capacidad portante del terreno.</span>', unsafe_allow_html=True)
 
     # Cálculo Integrado de Armaduras Estructurales y Punzonado
     st.markdown("---")
@@ -130,15 +130,15 @@ if modulo == "Bases Aisladas (DIMBASE)":
     phi_V_c = 0.75 * (1/3) * np.sqrt(f_ck) * bo * d * 1000
     
     if V_u <= phi_V_c:
-        st.markdown(f'<span class="success-text">✅ Verificación al punzonado aprobada. Vu ({V_u:.1f} kN) ≤ ϕVc ({phi_V_c:.1f} kN). No requiere refuerzo por corte.</span>', unsafe_allowed_html=True)
+        st.markdown(f'<span class="success-text">✅ Verificación al punzonado aprobada. Vu ({V_u:.1f} kN) ≤ ϕVc ({phi_V_c:.1f} kN). No requiere refuerzo por corte.</span>', unsafe_allow_html=True)
     else:
-        st.markdown(f'<span class="danger-text">❌ Falla por punzonado. Vu ({V_u:.1f} kN) > ϕVc ({phi_V_c:.1f} kN). Incremente la altura H de la zapata.</span>', unsafe_allowed_html=True)
+        st.markdown(f'<span class="danger-text">❌ Falla por punzonado. Vu ({V_u:.1f} kN) > ϕVc ({phi_V_c:.1f} kN). Incremente la altura H de la zapata.</span>', unsafe_allow_html=True)
 
 # ==============================================================================
 # MÓDULO 2: FUNDACIONES CONTINUAS (DIMSOLE)
 # ==============================================================================
 elif modulo == "Fundaciones Continuas (DIMSOLE)":
-    st.markdown('<div class="section-title">Módulo: Fundaciones Continuas y Zapatas Corridas</div>', unsafe_allowed_html=True)
+    st.markdown('<div class="section-title">Módulo: Fundaciones Continuas y Zapatas Corridas</div>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     with col1:
@@ -163,15 +163,15 @@ elif modulo == "Fundaciones Continuas (DIMSOLE)":
     st.markdown("**Verificación de Presiones sobre el Terreno**")
     st.write(f"Tensión máxima calculada: **{sigma_max_c:.2f} kPa**")
     if sigma_max_c <= sigma_adm_c:
-        st.markdown('<span class="success-text">✅ VERIFICA: Tensión en el suelo menor a la admisible.</span>', unsafe_allowed_html=True)
+        st.markdown('<span class="success-text">✅ VERIFICA: Tensión en el suelo menor a la admisible.</span>', unsafe_allow_html=True)
     else:
-        st.markdown('<span class="danger-text">❌ NO VERIFICA: Aumente el ancho B de la zapata corrida.</span>', unsafe_allowed_html=True)
+        st.markdown('<span class="danger-text">❌ NO VERIFICA: Aumente el ancho B de la zapata corrida.</span>', unsafe_allow_html=True)
 
 # ==============================================================================
 # MÓDULO 3: TENSORES Y VIGAS DE EQUILIBRIO (DIMTENS)
 # ==============================================================================
 elif modulo == "Tensores y Vigas (DIMTENS)":
-    st.markdown('<div class="section-title">Módulo: Vigas de Equilibrio y Tensores Estructurales</div>', unsafe_allowed_html=True)
+    st.markdown('<div class="section-title">Módulo: Vigas de Equilibrio y Tensores Estructurales</div>', unsafe_allow_html=True)
     st.write("Diseño estructural de elementos que absorben excentricidades críticas de zapatas medianeras.")
 
     col1, col2 = st.columns(2)
