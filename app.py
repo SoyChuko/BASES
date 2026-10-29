@@ -44,7 +44,7 @@ recubrimiento = st.sidebar.slider("Recubrimiento mecánico (r) [cm]", 3.0, 7.5, 
 # MÓDULO 1: BASES AISLADAS (DIMBASE) + REFUERZO ADMISIBLE (BAC-BE)
 # ==============================================================================
 if modulo == "Bases Aisladas (DIMBASE)":
-    st.markdown('<div class="section-title">Módulo: Zapatas Aisladas en Flexión Compuesta Fiel a DOS</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Módulo: Zapatas Aisladas con Flexión Compuesta Fiel a DOS</div>', unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     with col1:
@@ -183,24 +183,7 @@ elif modulo == "Tensores y Vigas (DIMTENS)":
         st.markdown("**Geometría de Vinculación**")
         L_viga = st.number_input("Longitud entre ejes de columnas L (m)", min_value=1.0, value=5.0, step=0.5)
         
-    # Esfuerzo de tracción axial puro deducido del par estático de servicio
     F_viga = (P_ext * excentricidad) / L_viga
     
     st.markdown("---")
-st.markdown("Análisis Estático de Equilibrio de Servicio")
-st.warning(f"Fuerza de tracción pura generada en el tensor: {F_viga:.2f} kN")
-st.markdown("Dimensionamiento de la Viga de Vínculo/Tensor")
-col3, col4 = st.columns(2)
-with col3:
-b_viga = st.number_input("Ancho de la viga b (m)", min_value=0.15, value=0.25, step=0.05)
-with col4:
-h_viga = st.number_input("Canto total de la viga h (m)", min_value=0.20, value=0.45, step=0.05)
-# Dimensionamiento a tracción simple sin mayoración (As = F / σ_s_adm)
-As_tensor = (F_viga * 1000) / sigma_s_adm
-st.success(f"Sección de acero necesaria para el tensor: {As_tensor/100:.2f} cm²")
-barra_t = st.selectbox("Seleccione diámetro de barra principal (mm)", [10, 12, 16, 20, 25], index=1)
-area_b_t = np.pi * (barra_t/2)**2
-cant_t = int(np.ceil(As_tensor / area_b_t))
-st.write(f"Recomendación: Colocar un mínimo de {max(cant_t, 2)} ø {barra_t} dispuestos simétricamente.")
-st.markdown("---")
-st.caption("Sistema BASE v2026. Réplica fiel del software original basada exclusivamente en CIRSOC 201-82.")
+    st.markdown("**Resultados del Análisis de Equilibrio Estático**")
